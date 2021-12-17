@@ -1,7 +1,8 @@
   section .text
   global process
   global initialize
-  extern rnd_state
+  global random_device
+  global rnd_state
 process:
     push rbp
     mov rbp, rsp
@@ -37,6 +38,8 @@ loop_start:
     cmp r13, 0
     jz loop_end
     call rnd
+    mov rdi, rax
+    call cvt2char
     mov [r12], al
     dec r13
     inc r12
@@ -44,6 +47,18 @@ loop_start:
 loop_end:
     pop r13
     pop r12
+    pop rbp
+    ret
+
+cvt2char:
+    push rbp
+    mov  rbp, rsp
+    mov rax, rdi
+    xor rdx, rdx
+    mov r10, 90
+    div r10
+    add dl, 32
+    mov al, dl
     pop rbp
     ret
 
@@ -60,12 +75,40 @@ rnd:
     xor rdx, rdx
     mov r10, 6217
     div r10
-    mov al, dl
     mov [rel rnd_state], rdx
-    xor rdx, rdx
-    mov r10, 90
-    div r10
-    add dl, 32
     mov al, dl
     pop rbp
     ret
+
+    %define SYSCALL_OPEN 0x02
+    %define SYSCALL_READ 0x00
+    %define SYSCALL_CLOSE 0x03
+    %define O_RDONLY 0x00
+
+random_device:
+    push rbp
+    mov rbp, rsp
+    push rax
+    mov rax, SYSCALL_OPEN
+    lea rdi, [rel random_device_fn]
+    mov rsi, 0
+    mov rdx, O_RDONLY
+    syscall
+    push rax
+    mov rdi, rax
+    mov rax, SYSCALL_READ
+    mov rsi, rbp
+    sub rsi, 8
+    mov rdx, 8
+    syscall
+    pop rdi
+    mov rax, SYSCALL_CLOSE
+    syscall
+    pop rax
+    pop rbp
+    ret
+
+  section .rodata
+random_device_fn db "/dev/random", 0
+  section .data
+rnd_state dq 23
