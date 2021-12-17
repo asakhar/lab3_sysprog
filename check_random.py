@@ -16,6 +16,21 @@ for seed in range(seedmin,seedmax):
       assert(line1 == line2[::-1]) # "Lines are not inverse of each other"
       if res is None:
         res = line1
+        i = 1
+        j = 0
+        while i < len(line1):
+          pj = j
+          pi = i
+          while j < len(line1) and i < len(line1):
+            if line1[j] != line1[i]:
+              j = pj
+              i = pi
+              break
+            i+=1
+            j+=1
+          if i == len(line1) or j == len(line1):
+            print(f"random seq len cycle length = {i-pi}\n{line1}")
+          i += 1
         continue
       assert(res == line1) # "Lines with same length and same seed should be equal"
 
