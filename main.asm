@@ -85,11 +85,10 @@ rnd:
     pop	rbp
     ret
 
-    %define	SYSCALL_OPEN	0x02
-    %define	SYSCALL_READ	0x00
-    %define	SYSCALL_CLOSE	0x03
-    %define	O_RDONLY	0x00
-
+%define	SYSCALL_OPEN	0x02
+%define	SYSCALL_READ	0x00
+%define	SYSCALL_CLOSE	0x03
+%define	O_RDONLY	0x00
 random_device:
     push	rbp
     mov	rbp,	rsp

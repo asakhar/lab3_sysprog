@@ -1,4 +1,3 @@
-#include <cstdlib>
 #include <iostream>
 
 void usage(char const* prog) {
@@ -13,7 +12,7 @@ extern long rnd_state;
 }
 
 int main(int argc, char const* argv[]) {
-  if (argc != 2 && argc != 3) {
+  if (argc != 2 && argc != 3 || std::atol(argv[1]) == 0) {
     usage(argv[0]);
     exit(1);
   }
