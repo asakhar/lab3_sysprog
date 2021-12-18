@@ -1,5 +1,5 @@
 #!/bin/env python3
-
+#%%  
 import subprocess
 
 seedmin = 456
@@ -37,3 +37,5 @@ for seed in range(seedmin, seedmax):
 
 print(
     f"Checked {seedmax-seedmin} seeds, {lenmax-lenmin} lengths, each {seq} times")
+
+# %%

@@ -89,6 +89,7 @@ rnd:
 %define	SYSCALL_READ	0x00
 %define	SYSCALL_CLOSE	0x03
 %define	O_RDONLY	0x00
+
 random_device:
     push	rbp
     mov	rbp,	rsp
@@ -111,7 +112,7 @@ random_device:
     pop	rax
     pop	rbp
     ret
-
+    
   section	.rodata
 random_device_fn	db	"/dev/random",	0
   section	.data
